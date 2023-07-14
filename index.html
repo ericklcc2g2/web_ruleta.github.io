@@ -1,0 +1,146 @@
+ <!DOCTYPE html>
+            <html>
+              <head>
+                <title>Ruleta</title>
+                <h1>lcc 2G2 </h1>
+                <style>
+                        body {
+                          background: linear-gradient(to bottom, #2f0deb, #08bdff);
+                        }
+                  
+                        .container {
+                          max-width: 600px;
+                          margin: 0 auto;
+                          padding: 20px;
+                          text-align: center;
+                          background-color: rgba(180, 131, 131, 0.192);
+                        }
+                  
+                        .roulette {
+                          margin-top: 20px;
+                          display: flex;
+                          justify-content: center;
+                        }
+                  
+                        .block {
+                          display: inline-block;
+                          width: 100px;
+                          height: 100px;
+                          line-height: 100px;
+                          text-align: center;
+                          border: 1px solid #000;
+                          margin-right: 5px;
+                          background-color: #190d52;
+                        }
+                  
+                        .block.winner {
+                          background-color: rgb(252, 0, 0); /* Color de fondo para el ganador */
+                        }
+                  
+                        .block.selected {
+                          background-color: #f44336; /* Color de fondo para el bloque seleccionado */
+                        }
+                  
+                        #startButton {
+                          margin-top: 20px;
+                          padding: 10px 20px;
+                          background-color: #4caf50;
+                          color: #ec0707;
+                          border: none;
+                          border-radius: 4px;
+                          cursor: pointer;
+                        }
+                  
+                        #resetButton {
+                          margin-top: 10px;
+                          padding: 10px 20px;
+                          background-color: #f44336;
+                          color: #e00e0e;
+                          border: none;
+                          border-radius: 4px;
+                          cursor: pointer;
+                        }
+                      </style>
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <h1>Ruleta</h1>
+                  <div class="roulette">
+                    <div class="block">1</div>
+                    <div class="block">2</div>
+                    <div class="block">3</div>
+                    <div class="block">4</div>
+                    <div class="block">5</div>
+                  </div>
+                  <button id="startButton">Iniciar</button>
+                  <button id="resetButton">Reiniciar</button>
+                </div>
+                <script>
+                    document.getElementById('startButton').addEventListener('click', function() {
+                        // Deshabilitar el botón de inicio mientras se muestra el ganador
+                        document.getElementById('startButton').disabled = true;
+                
+                        // Generar un número aleatorio del 1 al 5 para las penitencias
+                        var penitenciaNumber = Math.floor(Math.random() * 5) + 1;
+                
+                        // Crear un array con las penitencias
+                        var penitencias = ['Penitencia 1', 'Penitencia 2', 'Penitencia 3', 'Penitencia 4', 'Penitencia 5'];
+                
+                        // Reordenar el array de penitencias aleatoriamente
+                        penitencias = shuffleArray(penitencias);
+                
+                        // Remover la clase 'winner' y 'selected' de todos los bloques y establecer las penitencias
+                        var blocks = document.querySelectorAll('.block');
+                        blocks.forEach(function(block, index) {
+                          block.classList.remove('winner', 'selected');
+                          block.innerHTML = penitencias[index];
+                        });
+                
+                        // Seleccionar aleatoriamente un número del 1 al 5 para el ganador
+                        var randomNumber = Math.floor(Math.random() * 5) + 1;
+                
+                        // Agregar la clase 'winner' al bloque seleccionado aleatoriamente y mostrar el texto 'Ganador'
+                        var selectedBlock = document.querySelector('.block:nth-child(' + randomNumber + ')');
+                        selectedBlock.classList.add('winner');
+                        selectedBlock.innerHTML = 'Ganador';
+                
+                        // Agregar clase 'selected' al bloque seleccionado después de 1 segundo
+                        setTimeout(function() {
+                          selectedBlock.classList.add('selected');
+                        }, 1000);
+                
+                        // Habilitar el botón de inicio después de 5 segundos para reiniciar la ruleta
+                        setTimeout(function() {
+                          document.getElementById('startButton').disabled = false;
+                        }, 5000);
+                
+                        console.log('¡La ruleta se ha iniciado! El ganador es el bloque número: ' + randomNumber);
+                        console.log('Penitencia número ' + penitenciaNumber + ' para los perdedores.');
+                
+                        // Función para reordenar aleatoriamente un array
+                        function shuffleArray(array) {
+                          var currentIndex = array.length, temporaryValue, randomIndex;
+                
+                          // Mientras queden elementos para reordenar
+                          while (currentIndex !== 0) {
+                            // Seleccionar un elemento restante
+                            randomIndex = Math.floor(Math.random() * currentIndex);
+                            currentIndex -= 1;
+                
+                            // Intercambiar con el elemento actual
+                            temporaryValue = array[currentIndex];
+                            array[currentIndex] = array[randomIndex];
+                            array[randomIndex] = temporaryValue;
+                          }
+                
+                          return array;
+                        }
+                      });
+                
+                      document.getElementById('resetButton').addEventListener('click', function() {
+                        location.reload(); // Recargar la página para reiniciar
+                      });
+        </script>
+    </body>
+  </html>
